@@ -1,10 +1,14 @@
 package racing
 
-class Car(initialPosition: Int = 0) {
-    private val positionWrapper = Position(initialPosition)
+class Car(initialPosition: Int = 0, name: String = "자동차") {
+    private val positionWrapper = CarPosition(initialPosition)
+    private val nameWrapper = CarName(name)
 
     val position: Int
         get() = positionWrapper.position
+
+    val name: String
+        get() = nameWrapper.name
 
     fun attemptMove() {
         val randomNumber = (MOVE_LOWER_BOUND..MOVE_UPPER_BOUND).random()
@@ -21,8 +25,15 @@ class Car(initialPosition: Int = 0) {
     }
 }
 
-data class Position(var position: Int = 0) {
+data class CarPosition(var position: Int = 0) {
     fun go() {
         position += 1
+    }
+}
+
+@JvmInline
+value class CarName(val name: String) {
+    init {
+        require(name.length <= 5) { "자동차 이름은 5자를 초과할 수 없습니다." }
     }
 }
